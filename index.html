@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCST Student Hub</title>
+    <title>CCST Student Portal</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="theme-color" content="#27ae60">
@@ -35,7 +35,6 @@
             width: 90%;
             max-width: 400px;
             overflow: hidden;
-            transition: all 0.3s ease;
         }
 
         .padding-box {
@@ -80,13 +79,12 @@
             margin-top: 10px;
         }
 
-        /* DASHBOARD COMPONENTS */
+        /* DASHBOARD */
         .dash-header {
             background: var(--primary-color);
             color: white;
             padding: 30px 20px;
             text-align: center;
-            position: relative;
         }
 
         .profile-img {
@@ -98,19 +96,9 @@
             margin-bottom: 10px;
         }
 
-        .notif-box {
-            margin: 15px;
-            padding: 12px;
-            background: #fff3cd;
-            border-left: 5px solid #ffcc00;
-            display: none;
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
-
         .section-title {
-            padding: 10px 20px 0;
-            font-size: 0.9rem;
+            padding: 15px 20px 5px;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #555;
         }
@@ -124,14 +112,13 @@
         }
 
         .course-card {
-            min-width: 110px;
+            min-width: 100px;
             background: #f8f9fa;
-            padding: 15px 10px;
+            padding: 12px;
             border-radius: 12px;
-            border-top: 3px solid var(--lab-color);
+            border-top: 3px solid var(--accent-color);
             font-size: 0.75rem;
             text-align: center;
-            font-weight: 500;
         }
 
         .stat-grid {
@@ -151,7 +138,7 @@
 
         .stat-box small {
             color: #888;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
         }
 
@@ -170,28 +157,27 @@
             display: flex;
             justify-content: space-between;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background: #fafafa;
         }
 
         .acc-content {
             padding: 15px;
             display: none;
-            font-size: 0.8rem;
-            line-height: 1.6;
+            font-size: 0.75rem;
+            line-height: 1.5;
             border-top: 1px solid #eee;
-            color: #444;
             white-space: pre-line;
         }
 
-        /* SYNC OVERLAY */
+        /* OVERLAYS */
         #sync-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -233,7 +219,7 @@
 
     <div class="card-container" id="auth-container">
         <div class="padding-box">
-            <h2 id="form-title" style="text-align:center; margin-top:0;">Student Login</h2>
+            <h2 id="form-title" style="text-align:center;">Student Login</h2>
             <form id="main-form">
                 <div id="name-field" class="form-group" style="display:none;"><label>FULL NAME</label><input type="text"
                         id="fullname"></div>
@@ -258,41 +244,37 @@
     <div class="card-container" id="dashboard-container">
         <div class="dash-header" id="dash-head">
             <img src="" id="profile-pic" class="profile-img">
-            <h2 id="user-name" style="margin:0; font-size:1.2rem;">Student Name</h2>
-            <div id="user-prog" style="font-size:0.75rem; opacity:0.8; margin-top:5px; font-weight:bold;">PROGRAM</div>
+            <h2 id="user-name" style="margin:0; font-size:1.1rem;">Student Name</h2>
+            <div id="user-prog" style="font-size:0.7rem; opacity:0.8; margin-top:5px; font-weight:bold;">PROGRAM</div>
         </div>
 
-        <div class="notif-box" id="notif-box"><strong>Notice:</strong> <span id="notif-text"></span></div>
-
-        <div class="section-title">Current Course Load</div>
+        <div class="section-title">Current Semester Courses</div>
         <div class="course-grid" id="course-list"></div>
 
         <div class="stat-grid">
-            <div class="stat-box"><small>Current GPA</small><br><strong id="user-gpa"
-                    style="font-size:1.3rem;">0.00</strong></div>
+            <div class="stat-box"><small>Current GPA</small><br><strong id="user-gpa">0.00</strong></div>
             <div class="stat-box"><small>Fees Status</small><br><strong id="user-fees"
-                    style="font-size:1rem; color:var(--lab-color);">Pending</strong></div>
+                    style="color:var(--lab-color);">Pending</strong></div>
         </div>
 
         <div class="accordion">
-            <div class="acc-header" onclick="toggleAcc('acc-history')">Academic Results History <span>▼</span></div>
+            <div class="acc-header" onclick="toggleAcc('acc-history')">Results History <span>▼</span></div>
             <div id="acc-history" class="acc-content"></div>
         </div>
 
-        <div class="accordion" style="margin-bottom: 20px;">
-            <div class="acc-header" onclick="toggleAcc('acc-fees')">Detailed Fee Breakdown <span>▼</span></div>
+        <div class="accordion" style="margin-bottom:20px;">
+            <div class="acc-header" onclick="toggleAcc('acc-fees')">Fee Breakdown <span>▼</span></div>
             <div id="acc-fees" class="acc-content"></div>
         </div>
 
         <div style="text-align:center; padding-bottom:20px;">
             <button onclick="location.reload()"
-                style="background:none; color:#999; text-decoration:underline; width:auto; font-size:0.7rem; border:none;">Logout
-                Securely</button>
+                style="background:none; color:#999; text-decoration:underline; width:auto; font-size:0.7rem; border:none;">Logout</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpkYMLmEh0E_-8k1cfbO2XFJPvdUQV23mDvbYBItCF9p788nPuzVV9LFHuBfqKT55-Pw/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsl2VN7xukVYNy3hoJQfdIzqp7ClDb5zwl41Mlvasw_iVHjhM3t5YKEyIoH6lom7OduA/exec';
         let isLogin = true;
 
         function toggleMode() {
@@ -335,7 +317,7 @@
 
                     document.getElementById('user-name').innerText = student.name;
                     document.getElementById('user-prog').innerText = student.program.toUpperCase();
-                    document.getElementById('profile-pic').src = `https://ui-avatars.com/api/?name=${student.name}&background=random&color=fff&size=128`;
+                    document.getElementById('profile-pic').src = `https://ui-avatars.com/api/?name=${student.name}&background=random&color=fff`;
 
                     document.getElementById('user-gpa').innerText = student.gpa;
                     document.getElementById('user-fees').innerText = student.fees;
@@ -348,21 +330,16 @@
 
                     const cList = document.getElementById('course-list');
                     cList.innerHTML = '';
-                    (student.courses || "No Courses").split(',').forEach(c => {
+                    student.courses.split(',').forEach(c => {
                         cList.innerHTML += `<div class="course-card" style="border-top-color:${color}">${c.trim()}</div>`;
                     });
 
-                    document.getElementById('acc-history').innerText = student.history || "No history available.";
-                    document.getElementById('acc-fees').innerText = student.feeDetail || "No billing data.";
-
-                    if (student.notification) {
-                        document.getElementById('notif-text').innerText = student.notification;
-                        document.getElementById('notif-box').style.display = 'block';
-                    }
+                    document.getElementById('acc-history').innerText = student.history;
+                    document.getElementById('acc-fees').innerText = student.feeDetail;
                 })
                 .catch(() => {
                     overlay.style.display = 'none';
-                    alert("Account Error: Check connection or try again in 5 seconds.");
+                    alert("Login Error: Ensure account details match the database.");
                 });
         });
     </script>
