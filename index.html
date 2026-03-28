@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCST Student Hub</title>
+    <title>CCST Student Portal | Ready</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
@@ -14,10 +14,10 @@
         :root {
             --primary-color: #2c3e50;
             --accent-color: #3498db;
-            --nursing-color: #5ee73c;
+            --nursing-color: #e74c3c;
             --midwifery-color: #9b59b6;
-            --lab-color: #ffffff;
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #344969 100%);
+            --lab-color: #27ae60;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
 
         body {
@@ -44,6 +44,7 @@
             display: none;
             padding: 0;
             max-width: 600px;
+            overflow: hidden;
             animation: slideUp 0.5s ease-out;
         }
 
@@ -59,7 +60,6 @@
             }
         }
 
-        /* FORM STYLES */
         .form-group {
             margin-bottom: 1.2rem;
         }
@@ -80,6 +80,12 @@
             border-radius: 10px;
             box-sizing: border-box;
             font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--accent-color);
+            outline: none;
         }
 
         button {
@@ -92,9 +98,9 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
+            transition: transform 0.2s, background 0.3s;
         }
 
-        /* DASHBOARD */
         .dash-header {
             background: var(--primary-color);
             color: white;
@@ -138,7 +144,19 @@
             font-size: 0.85rem;
         }
 
-        /* SPLASH SCREEN */
+        .event-list {
+            padding: 0 20px 20px;
+        }
+
+        .event-item {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--accent-color);
+        }
+
         #splash-screen {
             position: fixed;
             top: 0;
@@ -197,16 +215,6 @@
         .hidden {
             display: none !important;
         }
-
-        .offline-tag {
-            background: #7f8c8d;
-            color: white;
-            font-size: 0.6rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
     </style>
 </head>
 
@@ -218,7 +226,10 @@
     </div>
 
     <div class="card-container" id="auth-container">
-        <h2 style="text-align: center; margin-top: 0;">CCST Student Portal</h2>
+        <h2 id="form-title" style="text-align: center; margin-top: 0;">CCST Student Portal</h2>
+        <p id="form-sub" style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 25px;">Enter
+            credentials to login</p>
+
         <form id="main-form">
             <div class="form-group" id="name-field" style="display: none;">
                 <label>FULL NAME</label>
@@ -242,6 +253,7 @@
             </div>
             <button type="submit" id="action-btn">Login</button>
         </form>
+
         <p style="text-align: center; font-size: 0.85rem; margin-top: 20px;">
             <span id="toggle-link">New student? <a href="#" onclick="toggleMode()"
                     style="color:var(--accent-color); font-weight:bold; text-decoration:none;">Register here</a></span>
@@ -251,21 +263,38 @@
     <div class="card-container" id="dashboard-container">
         <div class="dash-header" id="dash-head">
             <div class="notif-dot" id="notif-dot"></div>
-            <small style="opacity: 0.8;">Verified Student <span id="status-tag"></span></small>
+            <small style="opacity: 0.8;">Verified Student</small>
             <h2 id="user-name" style="margin: 5px 0 0 0;">Student Name</h2>
             <div id="user-prog"
                 style="font-size: 0.7rem; margin-top: 8px; font-weight: bold; background: rgba(255,255,255,0.2); display: inline-block; padding: 3px 10px; border-radius: 5px;">
                 PROGRAM</div>
         </div>
-        <div class="notif-box" id="notif-box"><strong>Notice:</strong> <span id="notif-text"></span></div>
-        <div class="stat-grid">
-            <div class="stat-box"><small>GPA</small><strong id="user-gpa">0.00</strong></div>
-            <div class="stat-box"><small>FEES STATUS</small><strong id="user-fees"
-                    style="font-size: 1rem;">Pending</strong></div>
+
+        <div class="notif-box" id="notif-box">
+            <strong>Notice:</strong> <span id="notif-text">Loading message...</span>
         </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <small>GPA</small>
+                <strong id="user-gpa">0.00</strong>
+            </div>
+            <div class="stat-box">
+                <small>FEES STATUS</small>
+                <strong id="user-fees" style="font-size: 1rem;">Pending</strong>
+            </div>
+        </div>
+
+        <div class="event-list">
+            <h4 style="margin-bottom: 12px; font-size: 0.9rem;">Upcoming Events</h4>
+            <div class="event-item">Mid-Semester Exams <br><small style="color:#888;">Oct 15 - Oct 22</small></div>
+            <div class="event-item" style="border-left-color: #f39c12;">Matriculation Ceremony <br><small
+                    style="color:#888;">Nov 10</small></div>
+        </div>
+
         <div style="text-align: center; padding-bottom: 20px;">
-            <button onclick="logout()"
-                style="background: transparent; color: #999; width: auto; font-size: 0.75rem; text-decoration: underline; border:none;">Secure
+            <button onclick="location.reload()"
+                style="background: transparent; color: #999; width: auto; font-size: 0.75rem; text-decoration: underline; border:none; cursor:pointer;">Secure
                 Logout</button>
         </div>
     </div>
@@ -274,56 +303,24 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5APD8vp8BXmflzQ9JaRXjtrpxl217KctxaG9QdVo2n-q8iULuyS0w2DImKGHLhmpkpQ/exec';
         let isLogin = true;
 
-        window.onload = () => {
-            // Check if student was already logged in (Offline Mode)
-            const cachedData = localStorage.getItem('ccst_user_data');
-            if (cachedData) {
-                renderDashboard(JSON.parse(cachedData));
-                document.getElementById('status-tag').innerHTML = '<span class="offline-tag">Offline Mode</span>';
-            }
-
-            const savedEmail = localStorage.getItem('ccst_email');
-            if (savedEmail) document.getElementById('email').value = savedEmail;
-        };
-
         function toggleMode() {
             isLogin = !isLogin;
             document.getElementById('form-title').innerText = isLogin ? "Student Login" : "Register Account";
+            document.getElementById('form-sub').innerText = isLogin ? "Enter credentials to login" : "Create your student account";
             document.getElementById('name-field').style.display = isLogin ? "none" : "block";
             document.getElementById('prog-field').style.display = isLogin ? "none" : "block";
             document.getElementById('action-btn').innerText = isLogin ? "Login" : "Register";
-        }
-
-        function logout() {
-            localStorage.clear();
-            location.reload();
-        }
-
-        function renderDashboard(student) {
-            document.getElementById('auth-container').classList.add('hidden');
-            document.getElementById('dashboard-container').style.display = 'block';
-            document.getElementById('user-name').innerText = student.name;
-            document.getElementById('user-prog').innerText = student.program.toUpperCase();
-            document.getElementById('user-gpa').innerText = student.gpa;
-            document.getElementById('user-fees').innerText = student.fees;
-
-            let themeColor = student.program === 'Nursing' ? 'var(--nursing-color)' :
-                student.program === 'Midwifery' ? 'var(--midwifery-color)' :
-                    student.program === 'Medical Laboratory' ? 'var(--lab-color)' : 'var(--accent-color)';
-            document.getElementById('dash-head').style.backgroundColor = themeColor;
-
-            if (student.notification) {
-                document.getElementById('notif-text').innerText = student.notification;
-                document.getElementById('notif-box').style.display = 'block';
-                document.getElementById('notif-dot').style.display = 'block';
-            }
+            document.getElementById('toggle-link').innerHTML = isLogin ?
+                "New student? <a href='#' onclick='toggleMode()' style='color:var(--accent-color); font-weight:bold; text-decoration:none;'>Register here</a>" :
+                "Existing student? <a href='#' onclick='toggleMode()' style='color:var(--accent-color); font-weight:bold; text-decoration:none;'>Login here</a>";
         }
 
         document.getElementById('main-form').addEventListener('submit', function (e) {
             e.preventDefault();
             const btn = document.getElementById('action-btn');
             const email = document.getElementById('email').value;
-            btn.innerText = "Connecting...";
+
+            btn.innerText = "Processing...";
             btn.disabled = true;
 
             const payload = {
@@ -334,29 +331,50 @@
                 program: document.getElementById('program').value
             };
 
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-                .then(() => fetch(`${SCRIPT_URL}?email=${email}`))
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            })
+                .then(() => {
+                    btn.innerText = "Syncing Data...";
+                    return fetch(`${SCRIPT_URL}?email=${email}`);
+                })
                 .then(res => res.json())
                 .then(student => {
-                    localStorage.setItem('ccst_user_data', JSON.stringify(student));
-                    localStorage.setItem('ccst_email', email);
-                    document.getElementById('status-tag').innerText = '';
-                    renderDashboard(student);
+                    document.getElementById('auth-container').classList.add('hidden');
+                    document.getElementById('dashboard-container').style.display = 'block';
+                    document.getElementById('user-name').innerText = student.name;
+                    document.getElementById('user-prog').innerText = student.program.toUpperCase();
+                    document.getElementById('user-gpa').innerText = student.gpa;
+                    document.getElementById('user-fees').innerText = student.fees;
+
+                    let themeColor = 'var(--accent-color)';
+                    if (student.program === 'Nursing') themeColor = 'var(--nursing-color)';
+                    if (student.program === 'Midwifery') themeColor = 'var(--midwifery-color)';
+                    if (student.program === 'Medical Laboratory') themeColor = 'var(--lab-color)';
+                    document.getElementById('dash-head').style.backgroundColor = themeColor;
+
+                    if (student.notification && student.notification.trim() !== "") {
+                        document.getElementById('notif-text').innerText = student.notification;
+                        document.getElementById('notif-box').style.display = 'block';
+                        document.getElementById('notif-dot').style.display = 'block';
+                    }
                 })
                 .catch(err => {
-                    const cached = localStorage.getItem('ccst_user_data');
-                    if (cached) alert("Working offline. Data may not be up to date.");
-                    else alert("Connection error. Please check your internet.");
+                    alert("Account error. If registering, please wait a moment and try logging in.");
                 })
-                .finally(() => { btn.disabled = false; btn.innerText = "Login"; });
+                .finally(() => {
+                    btn.innerText = isLogin ? "Login" : "Register";
+                    btn.disabled = false;
+                });
         });
 
-        // Splash screen fade
-        window.addEventListener('load', () => {
+        window.addEventListener('load', function () {
             setTimeout(() => {
-                const s = document.getElementById('splash-screen');
-                s.style.opacity = '0';
-                setTimeout(() => s.style.display = 'none', 500);
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 500);
             }, 2000);
         });
     </script>
