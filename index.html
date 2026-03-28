@@ -4,12 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCST Student Portal | Ready</title>
-
+    <title>CCST Student Portal</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="theme-color" content="#27ae60">
-
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -21,7 +19,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: var(--bg-gradient);
             margin: 0;
             display: flex;
@@ -31,45 +29,29 @@
         }
 
         .card-container {
-            background: rgba(255, 255, 255, 0.98);
+            background: white;
             padding: 2rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             width: 90%;
-            max-width: 450px;
-            transition: all 0.3s ease;
+            max-width: 400px;
         }
 
         #dashboard-container {
             display: none;
             padding: 0;
-            max-width: 600px;
             overflow: hidden;
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
         }
 
         label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         input,
@@ -79,13 +61,6 @@
             border: 1px solid #ddd;
             border-radius: 10px;
             box-sizing: border-box;
-            font-size: 1rem;
-            transition: border 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--accent-color);
-            outline: none;
         }
 
         button {
@@ -97,119 +72,50 @@
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s, background 0.3s;
         }
 
-        .dash-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 25px;
-            position: relative;
-        }
-
-        .notif-dot {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #ff4757;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: none;
-        }
-
-        .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 20px;
-        }
-
-        .stat-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-
-        .notif-box {
-            margin: 0 20px 20px;
-            padding: 15px;
-            background: #fff3cd;
-            border-radius: 10px;
-            border-left: 5px solid #ffcc00;
-            display: none;
-            font-size: 0.85rem;
-        }
-
-        .event-list {
-            padding: 0 20px 20px;
-        }
-
-        .event-item {
-            background: white;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--accent-color);
-        }
-
-        #splash-screen {
+        /* SYNC SPINNER OVERLAY */
+        #sync-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: white;
-            display: flex;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+            z-index: 10000;
         }
 
-        #splash-screen img {
-            width: 150px;
-            height: 150px;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
+        .dash-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
         }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
         }
 
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--lab-color);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
         }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+        .notif-box {
+            margin: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 5px solid #ffcc00;
+            display: none;
+            border-radius: 8px;
         }
 
         .hidden {
@@ -219,109 +125,67 @@
 </head>
 
 <body>
-    <div id="splash-screen">
-        <img src="icon-512.png" alt="CCST Logo">
-        <div class="loader"></div>
-        <p style="margin-top: 15px; color: #27ae60; font-weight: bold; font-family: sans-serif;">C.C.S.T. PORTAL</p>
+
+    <div id="sync-overlay">
+        <div class="loader"
+            style="border: 4px solid #f3f3f3; border-top: 4px solid #27ae60; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;">
+        </div>
+        <p id="sync-text" style="margin-top: 15px; font-weight: bold; color: #2c3e50;">Syncing with CCST Database...</p>
     </div>
 
     <div class="card-container" id="auth-container">
-        <h2 id="form-title" style="text-align: center; margin-top: 0;">CCST Student Portal</h2>
-        <p id="form-sub" style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 25px;">Enter
-            credentials to login</p>
-
+        <h2 id="form-title" style="text-align: center;">Student Login</h2>
         <form id="main-form">
-            <div class="form-group" id="name-field" style="display: none;">
-                <label>FULL NAME</label>
-                <input type="text" id="fullname" placeholder="John Doe">
-            </div>
-            <div class="form-group">
-                <label>EMAIL ADDRESS</label>
-                <input type="email" id="email" required placeholder="student@college.edu">
-            </div>
-            <div class="form-group">
-                <label>PASSWORD</label>
-                <input type="password" id="password" required placeholder="••••••••">
-            </div>
-            <div class="form-group" id="prog-field" style="display: none;">
-                <label>ACADEMIC PROGRAM</label>
+            <div id="name-field" class="form-group" style="display:none;"><label>FULL NAME</label><input type="text"
+                    id="fullname"></div>
+            <div class="form-group"><label>EMAIL</label><input type="email" id="email" required></div>
+            <div class="form-group"><label>PASSWORD</label><input type="password" id="password" required></div>
+            <div id="prog-field" class="form-group" style="display:none;"><label>PROGRAM</label>
                 <select id="program">
-                    <option value="Nursing">Nursing</option>
-                    <option value="Midwifery">Midwifery</option>
-                    <option value="Medical Laboratory">Medical Laboratory</option>
+                    <option>Nursing</option>
+                    <option>Midwifery</option>
+                    <option>Medical Laboratory</option>
                 </select>
             </div>
             <button type="submit" id="action-btn">Login</button>
         </form>
-
-        <p style="text-align: center; font-size: 0.85rem; margin-top: 20px;">
-            <span id="toggle-link">New student? <a href="#" onclick="toggleMode()"
-                    style="color:var(--accent-color); font-weight:bold; text-decoration:none;">Register here</a></span>
+        <p style="text-align: center; font-size: 0.8rem; margin-top: 15px;">
+            <a href="#" onclick="toggleMode()" id="toggle-text"
+                style="color:var(--accent-color); text-decoration:none;">New student? Register</a>
         </p>
     </div>
 
     <div class="card-container" id="dashboard-container">
         <div class="dash-header" id="dash-head">
-            <div class="notif-dot" id="notif-dot"></div>
-            <small style="opacity: 0.8;">Verified Student</small>
-            <h2 id="user-name" style="margin: 5px 0 0 0;">Student Name</h2>
-            <div id="user-prog"
-                style="font-size: 0.7rem; margin-top: 8px; font-weight: bold; background: rgba(255,255,255,0.2); display: inline-block; padding: 3px 10px; border-radius: 5px;">
-                PROGRAM</div>
+            <h2 id="user-name">Student</h2>
+            <div id="user-prog" style="font-size: 0.7rem; opacity: 0.9;">PROGRAM</div>
         </div>
-
-        <div class="notif-box" id="notif-box">
-            <strong>Notice:</strong> <span id="notif-text">Loading message...</span>
-        </div>
-
+        <div class="notif-box" id="notif-box"><strong>Notice:</strong> <span id="notif-text"></span></div>
         <div class="stat-grid">
-            <div class="stat-box">
-                <small>GPA</small>
-                <strong id="user-gpa">0.00</strong>
-            </div>
-            <div class="stat-box">
-                <small>FEES STATUS</small>
-                <strong id="user-fees" style="font-size: 1rem;">Pending</strong>
-            </div>
+            <div class="stat-box"><small>GPA</small><br><strong id="user-gpa">0.00</strong></div>
+            <div class="stat-box"><small>FEES</small><br><strong id="user-fees">Pending</strong></div>
         </div>
-
-        <div class="event-list">
-            <h4 style="margin-bottom: 12px; font-size: 0.9rem;">Upcoming Events</h4>
-            <div class="event-item">Mid-Semester Exams <br><small style="color:#888;">Oct 15 - Oct 22</small></div>
-            <div class="event-item" style="border-left-color: #f39c12;">Matriculation Ceremony <br><small
-                    style="color:#888;">Nov 10</small></div>
-        </div>
-
-        <div style="text-align: center; padding-bottom: 20px;">
-            <button onclick="location.reload()"
-                style="background: transparent; color: #999; width: auto; font-size: 0.75rem; text-decoration: underline; border:none; cursor:pointer;">Secure
-                Logout</button>
-        </div>
+        <button onclick="location.reload()"
+            style="background:none; color:#999; text-decoration:underline;">Logout</button>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyURDS-JzvuyLwknyH_Yu8LpLiulvet-FY-Ro5iRfY25UT5G_ceEM0PGFfxXM9Y037j8Q/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwpkYMLmEh0E_-8k1cfbO2XFJPvdUQV23mDvbYBItCF9p788nPuzVV9LFHuBfqKT55-Pw/exec';
         let isLogin = true;
 
         function toggleMode() {
             isLogin = !isLogin;
             document.getElementById('form-title').innerText = isLogin ? "Student Login" : "Register Account";
-            document.getElementById('form-sub').innerText = isLogin ? "Enter credentials to login" : "Create your student account";
             document.getElementById('name-field').style.display = isLogin ? "none" : "block";
             document.getElementById('prog-field').style.display = isLogin ? "none" : "block";
             document.getElementById('action-btn').innerText = isLogin ? "Login" : "Register";
-            document.getElementById('toggle-link').innerHTML = isLogin ?
-                "New student? <a href='#' onclick='toggleMode()' style='color:var(--accent-color); font-weight:bold; text-decoration:none;'>Register here</a>" :
-                "Existing student? <a href='#' onclick='toggleMode()' style='color:var(--accent-color); font-weight:bold; text-decoration:none;'>Login here</a>";
         }
 
         document.getElementById('main-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            const btn = document.getElementById('action-btn');
+            const overlay = document.getElementById('sync-overlay');
             const email = document.getElementById('email').value;
-
-            btn.innerText = "Processing...";
-            btn.disabled = true;
+            overlay.style.display = 'flex';
 
             const payload = {
                 action: isLogin ? 'login' : 'register',
@@ -331,53 +195,44 @@
                 program: document.getElementById('program').value
             };
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(payload)
-            })
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
                 .then(() => {
-                    btn.innerText = "Syncing Data...";
-                    return fetch(`${SCRIPT_URL}?email=${email}`);
+                    // Give the sheet 2 seconds to process before fetching
+                    return new Promise(resolve => setTimeout(resolve, 2000));
                 })
+                .then(() => fetch(`${SCRIPT_URL}?email=${email}`))
                 .then(res => res.json())
                 .then(student => {
+                    if (student.error) throw new Error();
+                    overlay.style.display = 'none';
                     document.getElementById('auth-container').classList.add('hidden');
                     document.getElementById('dashboard-container').style.display = 'block';
                     document.getElementById('user-name').innerText = student.name;
-                    document.getElementById('user-prog').innerText = student.program.toUpperCase();
                     document.getElementById('user-gpa').innerText = student.gpa;
                     document.getElementById('user-fees').innerText = student.fees;
 
-                    let themeColor = 'var(--accent-color)';
-                    if (student.program === 'Nursing') themeColor = 'var(--nursing-color)';
-                    if (student.program === 'Midwifery') themeColor = 'var(--midwifery-color)';
-                    if (student.program === 'Medical Laboratory') themeColor = 'var(--lab-color)';
-                    document.getElementById('dash-head').style.backgroundColor = themeColor;
-
-                    if (student.notification && student.notification.trim() !== "") {
+                    if (student.notification) {
                         document.getElementById('notif-text').innerText = student.notification;
                         document.getElementById('notif-box').style.display = 'block';
-                        document.getElementById('notif-dot').style.display = 'block';
                     }
                 })
-                .catch(err => {
-                    alert("Account error. If registering, please wait a moment and try logging in.");
-                })
-                .finally(() => {
-                    btn.innerText = isLogin ? "Login" : "Register";
-                    btn.disabled = false;
+                .catch(() => {
+                    overlay.style.display = 'none';
+                    alert("Account not found. If you just registered, wait 5 seconds and try logging in.");
                 });
         });
-
-        window.addEventListener('load', function () {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
-                setTimeout(() => splash.style.display = 'none', 500);
-            }, 2000);
-        });
     </script>
+    <style>
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </body>
 
 </html>
