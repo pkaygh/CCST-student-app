@@ -1,16 +1,22 @@
 {
-  "short_name": "CCST",
-  "name": "CCST Student Portal",
+  "short_name": "CCST Portal",
+  "name": "C.C.S.T. Student Portal",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3135/3135810.png",
+      "src": "icon-192.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "./index.html",
-  "background_color": "#2c3e50",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "./",
-  "theme_color": "#2c3e50"
+  "theme_color": "#27ae60"
 }
