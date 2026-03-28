@@ -15,44 +15,41 @@
             --nursing-color: #e74c3c;
             --midwifery-color: #9b59b6;
             --lab-color: #27ae60;
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --sidebar-width: 250px;
         }
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: var(--bg-gradient);
+            background: #f4f7f9;
             margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* AUTH PAGE STYLES */
+        #auth-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
 
-        .card-container {
+        .auth-card {
             background: white;
+            padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             width: 90%;
-            max-width: 400px;
-            overflow: hidden;
+            max-width: 380px;
         }
 
-        .padding-box {
-            padding: 2rem;
-        }
-
-        #dashboard-container {
-            display: none;
-        }
-
-        /* AUTH STYLES */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         label {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: bold;
             margin-bottom: 5px;
             color: var(--primary-color);
@@ -67,7 +64,7 @@
             box-sizing: border-box;
         }
 
-        button {
+        .btn-primary {
             width: 100%;
             padding: 14px;
             background: var(--accent-color);
@@ -76,118 +73,137 @@
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
         }
 
-        /* DASHBOARD */
-        .dash-header {
+        /* DASHBOARD LAYOUT */
+        #dashboard-wrapper {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        #sidebar {
+            width: var(--sidebar-width);
             background: var(--primary-color);
             color: white;
+            position: fixed;
+            height: 100%;
+            transition: 0.3s;
+            z-index: 1000;
+            left: -250px;
+        }
+
+        #sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
             padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* MAIN CONTENT */
+        #main-content {
+            margin-left: 0;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .menu-toggle {
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 20px;
+            color: var(--primary-color);
+        }
+
+        .content-body {
+            padding: 25px;
+            max-width: 900px;
+            margin: auto;
+            display: none;
+        }
+
+        .content-body.active {
+            display: block;
+        }
+
+        /* DASHBOARD ELEMENTS */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             text-align: center;
         }
 
         .profile-img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            background: #eee;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            border: 4px solid var(--accent-color);
         }
 
-        .section-title {
-            padding: 15px 20px 5px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .course-grid {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 10px 20px 20px;
-            scrollbar-width: none;
-        }
-
-        .course-card {
-            min-width: 100px;
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 12px;
-            border-top: 3px solid var(--accent-color);
-            font-size: 0.75rem;
-            text-align: center;
-        }
-
-        .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 0 20px 20px;
-        }
-
-        .stat-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-
-        .stat-box small {
-            color: #888;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-        }
-
-        /* ACCORDIONS */
-        .accordion {
-            background: #fff;
-            margin: 0 20px 10px;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .acc-header {
-            padding: 15px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            font-weight: 600;
-            font-size: 0.8rem;
-            background: #fafafa;
-        }
-
-        .acc-content {
-            padding: 15px;
-            display: none;
-            font-size: 0.75rem;
-            line-height: 1.5;
-            border-top: 1px solid #eee;
-            white-space: pre-line;
-        }
-
-        /* OVERLAYS */
         #sync-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10000;
+            z-index: 10001;
         }
 
         .loader {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--lab-color);
+            border-top: 4px solid var(--accent-color);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -214,11 +230,11 @@
 
     <div id="sync-overlay">
         <div class="loader"></div>
-        <p style="margin-top:15px; font-weight:bold; color:var(--primary-color);">Syncing Database...</p>
+        <p>Processing Request...</p>
     </div>
 
-    <div class="card-container" id="auth-container">
-        <div class="padding-box">
+    <div id="auth-container">
+        <div class="auth-card">
             <h2 id="form-title" style="text-align:center;">Student Login</h2>
             <form id="main-form">
                 <div id="name-field" class="form-group" style="display:none;"><label>FULL NAME</label><input type="text"
@@ -232,49 +248,69 @@
                         <option>Medical Laboratory</option>
                     </select>
                 </div>
-                <button type="submit" id="action-btn">Login</button>
+                <button type="submit" class="btn-primary" id="action-btn">Login</button>
             </form>
             <p style="text-align:center; font-size:0.8rem; margin-top:20px;">
-                <a href="#" onclick="toggleMode()" id="toggle-text"
-                    style="color:var(--accent-color); text-decoration:none; font-weight:bold;">New student? Register</a>
+                <a href="#" onclick="toggleMode()" id="toggle-text">New student? Register</a>
             </p>
         </div>
     </div>
 
-    <div class="card-container" id="dashboard-container">
-        <div class="dash-header" id="dash-head">
-            <img src="" id="profile-pic" class="profile-img">
-            <h2 id="user-name" style="margin:0; font-size:1.1rem;">Student Name</h2>
-            <div id="user-prog" style="font-size:0.7rem; opacity:0.8; margin-top:5px; font-weight:bold;">PROGRAM</div>
-        </div>
+    <div id="dashboard-wrapper">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <img id="side-profile-pic" class="profile-img" src="">
+                <h3 id="side-name" style="margin:10px 0 5px; font-size:1rem;">Student</h3>
+                <small id="side-prog" style="opacity:0.7; font-size:0.7rem;">PROGRAM</small>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" onclick="showPage('overview', this)">📊 Overview</li>
+                <li class="nav-item" onclick="showPage('courses', this)">📚 My Courses</li>
+                <li class="nav-item" onclick="showPage('grades', this)">📝 Academic Records</li>
+                <li class="nav-item" onclick="showPage('finance', this)">💰 Fees & Billing</li>
+                <li class="nav-item" style="color:#e74c3c; margin-top:50px;" onclick="location.reload()">🚪 Logout</li>
+            </ul>
+        </nav>
 
-        <div class="section-title">Current Semester Courses</div>
-        <div class="course-grid" id="course-list"></div>
+        <main id="main-content">
+            <div class="top-bar">
+                <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+                <div style="font-weight:bold; color:var(--primary-color);">CCST STUDENT PORTAL</div>
+            </div>
 
-        <div class="stat-grid">
-            <div class="stat-box"><small>Current GPA</small><br><strong id="user-gpa">0.00</strong></div>
-            <div class="stat-box"><small>Fees Status</small><br><strong id="user-fees"
-                    style="color:var(--lab-color);">Pending</strong></div>
-        </div>
+            <div id="overview" class="content-body active">
+                <h2>Dashboard Overview</h2>
+                <div class="stat-grid">
+                    <div class="stat-box"><small>Current GPA</small><br><strong id="user-gpa"
+                            style="font-size:1.5rem;">0.00</strong></div>
+                    <div class="stat-box"><small>Fees Status</small><br><strong id="user-fees">Pending</strong></div>
+                </div>
+                <div id="notif-box" style="padding:20px; background:#fff3cd; border-radius:10px; display:none;">
+                    <strong>Announcement:</strong> <span id="notif-text"></span>
+                </div>
+            </div>
 
-        <div class="accordion">
-            <div class="acc-header" onclick="toggleAcc('acc-history')">Results History <span>▼</span></div>
-            <div id="acc-history" class="acc-content"></div>
-        </div>
+            <div id="courses" class="content-body">
+                <h2>Current Course Load</h2>
+                <div id="course-container" style="display:grid; gap:15px;"></div>
+            </div>
 
-        <div class="accordion" style="margin-bottom:20px;">
-            <div class="acc-header" onclick="toggleAcc('acc-fees')">Fee Breakdown <span>▼</span></div>
-            <div id="acc-fees" class="acc-content"></div>
-        </div>
+            <div id="grades" class="content-body">
+                <h2>Academic Results History</h2>
+                <div id="history-box" style="background:white; padding:20px; border-radius:15px; white-space:pre-line;">
+                </div>
+            </div>
 
-        <div style="text-align:center; padding-bottom:20px;">
-            <button onclick="location.reload()"
-                style="background:none; color:#999; text-decoration:underline; width:auto; font-size:0.7rem; border:none;">Logout</button>
-        </div>
+            <div id="finance" class="content-body">
+                <h2>Fee Breakdown</h2>
+                <div id="fee-detail-box"
+                    style="background:white; padding:20px; border-radius:15px; white-space:pre-line;"></div>
+            </div>
+        </main>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsl2VN7xukVYNy3hoJQfdIzqp7ClDb5zwl41Mlvasw_iVHjhM3t5YKEyIoH6lom7OduA/exec';
+        const SCRIPT_URL = 'PASTE_YOUR_NEW_URL_HERE';
         let isLogin = true;
 
         function toggleMode() {
@@ -283,19 +319,28 @@
             document.getElementById('name-field').style.display = isLogin ? "none" : "block";
             document.getElementById('prog-field').style.display = isLogin ? "none" : "block";
             document.getElementById('action-btn').innerText = isLogin ? "Login" : "Register";
-            document.getElementById('toggle-text').innerText = isLogin ? "New student? Register" : "Have an account? Login";
         }
 
-        function toggleAcc(id) {
-            const content = document.getElementById(id);
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            const main = document.getElementById('main-content');
+            if (window.innerWidth > 768) {
+                main.style.marginLeft = main.style.marginLeft === '250px' ? '0' : '250px';
+            }
+        }
+
+        function showPage(pageId, element) {
+            document.querySelectorAll('.content-body').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            element.classList.add('active');
+            if (window.innerWidth < 768) toggleSidebar(); // Auto-close on mobile
         }
 
         document.getElementById('main-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            const overlay = document.getElementById('sync-overlay');
             const email = document.getElementById('email').value;
-            overlay.style.display = 'flex';
+            document.getElementById('sync-overlay').style.display = 'flex';
 
             const payload = {
                 action: isLogin ? 'login' : 'register',
@@ -311,35 +356,30 @@
                 .then(res => res.json())
                 .then(student => {
                     if (student.error) throw new Error();
-                    overlay.style.display = 'none';
+                    document.getElementById('sync-overlay').style.display = 'none';
                     document.getElementById('auth-container').classList.add('hidden');
-                    document.getElementById('dashboard-container').style.display = 'block';
+                    document.getElementById('dashboard-wrapper').style.display = 'block';
 
-                    document.getElementById('user-name').innerText = student.name;
-                    document.getElementById('user-prog').innerText = student.program.toUpperCase();
-                    document.getElementById('profile-pic').src = `https://ui-avatars.com/api/?name=${student.name}&background=random&color=fff`;
-
+                    // Map Data
+                    document.getElementById('side-name').innerText = student.name;
+                    document.getElementById('side-prog').innerText = student.program;
                     document.getElementById('user-gpa').innerText = student.gpa;
                     document.getElementById('user-fees').innerText = student.fees;
+                    document.getElementById('history-box').innerText = student.history;
+                    document.getElementById('fee-detail-box').innerText = student.feeDetail;
+                    document.getElementById('side-profile-pic').src = `https://ui-avatars.com/api/?name=${student.name}&background=random&color=fff`;
 
-                    let color = 'var(--accent-color)';
-                    if (student.program === 'Nursing') color = 'var(--nursing-color)';
-                    if (student.program === 'Midwifery') color = 'var(--midwifery-color)';
-                    if (student.program === 'Medical Laboratory') color = 'var(--lab-color)';
-                    document.getElementById('dash-head').style.backgroundColor = color;
-
-                    const cList = document.getElementById('course-list');
+                    const cList = document.getElementById('course-container');
                     cList.innerHTML = '';
                     student.courses.split(',').forEach(c => {
-                        cList.innerHTML += `<div class="course-card" style="border-top-color:${color}">${c.trim()}</div>`;
+                        cList.innerHTML += `<div style="background:white; padding:15px; border-radius:10px; border-left:5px solid var(--accent-color)">${c.trim()}</div>`;
                     });
 
-                    document.getElementById('acc-history').innerText = student.history;
-                    document.getElementById('acc-fees').innerText = student.feeDetail;
+                    if (window.innerWidth > 768) toggleSidebar(); // Show sidebar by default on desktop
                 })
                 .catch(() => {
-                    overlay.style.display = 'none';
-                    alert("Login Error: Ensure account details match the database.");
+                    document.getElementById('sync-overlay').style.display = 'none';
+                    alert("Login Error: Check credentials or network.");
                 });
         });
     </script>
