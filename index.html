@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCST Student Portal</title>
+    <title>CCST Student Hub</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="theme-color" content="#27ae60">
@@ -30,19 +30,23 @@
 
         .card-container {
             background: white;
-            padding: 2rem;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             width: 90%;
             max-width: 400px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .padding-box {
+            padding: 2rem;
         }
 
         #dashboard-container {
             display: none;
-            padding: 0;
-            overflow: hidden;
         }
 
+        /* AUTH STYLES */
         .form-group {
             margin-bottom: 1rem;
         }
@@ -52,6 +56,7 @@
             font-size: 0.7rem;
             font-weight: bold;
             margin-bottom: 5px;
+            color: var(--primary-color);
         }
 
         input,
@@ -72,9 +77,114 @@
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
         }
 
-        /* SYNC SPINNER OVERLAY */
+        /* DASHBOARD COMPONENTS */
+        .dash-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            background: #eee;
+            margin-bottom: 10px;
+        }
+
+        .notif-box {
+            margin: 15px;
+            padding: 12px;
+            background: #fff3cd;
+            border-left: 5px solid #ffcc00;
+            display: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .section-title {
+            padding: 10px 20px 0;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .course-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 20px 20px;
+            scrollbar-width: none;
+        }
+
+        .course-card {
+            min-width: 110px;
+            background: #f8f9fa;
+            padding: 15px 10px;
+            border-radius: 12px;
+            border-top: 3px solid var(--lab-color);
+            font-size: 0.75rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 20px 20px;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .stat-box small {
+            color: #888;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        /* ACCORDIONS */
+        .accordion {
+            background: #fff;
+            margin: 0 20px 10px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .acc-header {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.85rem;
+            background: #fafafa;
+        }
+
+        .acc-content {
+            padding: 15px;
+            display: none;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            border-top: 1px solid #eee;
+            color: #444;
+            white-space: pre-line;
+        }
+
+        /* SYNC OVERLAY */
         #sync-overlay {
             position: fixed;
             top: 0;
@@ -89,33 +199,23 @@
             z-index: 10000;
         }
 
-        .dash-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 20px;
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--lab-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
         }
 
-        .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 15px;
-        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-        .stat-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .notif-box {
-            margin: 15px;
-            padding: 15px;
-            background: #fff3cd;
-            border-left: 5px solid #ffcc00;
-            display: none;
-            border-radius: 8px;
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .hidden {
@@ -127,46 +227,68 @@
 <body>
 
     <div id="sync-overlay">
-        <div class="loader"
-            style="border: 4px solid #f3f3f3; border-top: 4px solid #27ae60; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;">
-        </div>
-        <p id="sync-text" style="margin-top: 15px; font-weight: bold; color: #2c3e50;">Syncing with CCST Database...</p>
+        <div class="loader"></div>
+        <p style="margin-top:15px; font-weight:bold; color:var(--primary-color);">Syncing Database...</p>
     </div>
 
     <div class="card-container" id="auth-container">
-        <h2 id="form-title" style="text-align: center;">Student Login</h2>
-        <form id="main-form">
-            <div id="name-field" class="form-group" style="display:none;"><label>FULL NAME</label><input type="text"
-                    id="fullname"></div>
-            <div class="form-group"><label>EMAIL</label><input type="email" id="email" required></div>
-            <div class="form-group"><label>PASSWORD</label><input type="password" id="password" required></div>
-            <div id="prog-field" class="form-group" style="display:none;"><label>PROGRAM</label>
-                <select id="program">
-                    <option>Nursing</option>
-                    <option>Midwifery</option>
-                    <option>Medical Laboratory</option>
-                </select>
-            </div>
-            <button type="submit" id="action-btn">Login</button>
-        </form>
-        <p style="text-align: center; font-size: 0.8rem; margin-top: 15px;">
-            <a href="#" onclick="toggleMode()" id="toggle-text"
-                style="color:var(--accent-color); text-decoration:none;">New student? Register</a>
-        </p>
+        <div class="padding-box">
+            <h2 id="form-title" style="text-align:center; margin-top:0;">Student Login</h2>
+            <form id="main-form">
+                <div id="name-field" class="form-group" style="display:none;"><label>FULL NAME</label><input type="text"
+                        id="fullname"></div>
+                <div class="form-group"><label>EMAIL</label><input type="email" id="email" required></div>
+                <div class="form-group"><label>PASSWORD</label><input type="password" id="password" required></div>
+                <div id="prog-field" class="form-group" style="display:none;"><label>PROGRAM</label>
+                    <select id="program">
+                        <option>Nursing</option>
+                        <option>Midwifery</option>
+                        <option>Medical Laboratory</option>
+                    </select>
+                </div>
+                <button type="submit" id="action-btn">Login</button>
+            </form>
+            <p style="text-align:center; font-size:0.8rem; margin-top:20px;">
+                <a href="#" onclick="toggleMode()" id="toggle-text"
+                    style="color:var(--accent-color); text-decoration:none; font-weight:bold;">New student? Register</a>
+            </p>
+        </div>
     </div>
 
     <div class="card-container" id="dashboard-container">
         <div class="dash-header" id="dash-head">
-            <h2 id="user-name">Student</h2>
-            <div id="user-prog" style="font-size: 0.7rem; opacity: 0.9;">PROGRAM</div>
+            <img src="" id="profile-pic" class="profile-img">
+            <h2 id="user-name" style="margin:0; font-size:1.2rem;">Student Name</h2>
+            <div id="user-prog" style="font-size:0.75rem; opacity:0.8; margin-top:5px; font-weight:bold;">PROGRAM</div>
         </div>
+
         <div class="notif-box" id="notif-box"><strong>Notice:</strong> <span id="notif-text"></span></div>
+
+        <div class="section-title">Current Course Load</div>
+        <div class="course-grid" id="course-list"></div>
+
         <div class="stat-grid">
-            <div class="stat-box"><small>GPA</small><br><strong id="user-gpa">0.00</strong></div>
-            <div class="stat-box"><small>FEES</small><br><strong id="user-fees">Pending</strong></div>
+            <div class="stat-box"><small>Current GPA</small><br><strong id="user-gpa"
+                    style="font-size:1.3rem;">0.00</strong></div>
+            <div class="stat-box"><small>Fees Status</small><br><strong id="user-fees"
+                    style="font-size:1rem; color:var(--lab-color);">Pending</strong></div>
         </div>
-        <button onclick="location.reload()"
-            style="background:none; color:#999; text-decoration:underline;">Logout</button>
+
+        <div class="accordion">
+            <div class="acc-header" onclick="toggleAcc('acc-history')">Academic Results History <span>▼</span></div>
+            <div id="acc-history" class="acc-content"></div>
+        </div>
+
+        <div class="accordion" style="margin-bottom: 20px;">
+            <div class="acc-header" onclick="toggleAcc('acc-fees')">Detailed Fee Breakdown <span>▼</span></div>
+            <div id="acc-fees" class="acc-content"></div>
+        </div>
+
+        <div style="text-align:center; padding-bottom:20px;">
+            <button onclick="location.reload()"
+                style="background:none; color:#999; text-decoration:underline; width:auto; font-size:0.7rem; border:none;">Logout
+                Securely</button>
+        </div>
     </div>
 
     <script>
@@ -179,6 +301,12 @@
             document.getElementById('name-field').style.display = isLogin ? "none" : "block";
             document.getElementById('prog-field').style.display = isLogin ? "none" : "block";
             document.getElementById('action-btn').innerText = isLogin ? "Login" : "Register";
+            document.getElementById('toggle-text').innerText = isLogin ? "New student? Register" : "Have an account? Login";
+        }
+
+        function toggleAcc(id) {
+            const content = document.getElementById(id);
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
         }
 
         document.getElementById('main-form').addEventListener('submit', function (e) {
@@ -196,10 +324,7 @@
             };
 
             fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) })
-                .then(() => {
-                    // Give the sheet 2 seconds to process before fetching
-                    return new Promise(resolve => setTimeout(resolve, 2000));
-                })
+                .then(() => new Promise(res => setTimeout(res, 2500)))
                 .then(() => fetch(`${SCRIPT_URL}?email=${email}`))
                 .then(res => res.json())
                 .then(student => {
@@ -207,9 +332,28 @@
                     overlay.style.display = 'none';
                     document.getElementById('auth-container').classList.add('hidden');
                     document.getElementById('dashboard-container').style.display = 'block';
+
                     document.getElementById('user-name').innerText = student.name;
+                    document.getElementById('user-prog').innerText = student.program.toUpperCase();
+                    document.getElementById('profile-pic').src = `https://ui-avatars.com/api/?name=${student.name}&background=random&color=fff&size=128`;
+
                     document.getElementById('user-gpa').innerText = student.gpa;
                     document.getElementById('user-fees').innerText = student.fees;
+
+                    let color = 'var(--accent-color)';
+                    if (student.program === 'Nursing') color = 'var(--nursing-color)';
+                    if (student.program === 'Midwifery') color = 'var(--midwifery-color)';
+                    if (student.program === 'Medical Laboratory') color = 'var(--lab-color)';
+                    document.getElementById('dash-head').style.backgroundColor = color;
+
+                    const cList = document.getElementById('course-list');
+                    cList.innerHTML = '';
+                    (student.courses || "No Courses").split(',').forEach(c => {
+                        cList.innerHTML += `<div class="course-card" style="border-top-color:${color}">${c.trim()}</div>`;
+                    });
+
+                    document.getElementById('acc-history').innerText = student.history || "No history available.";
+                    document.getElementById('acc-fees').innerText = student.feeDetail || "No billing data.";
 
                     if (student.notification) {
                         document.getElementById('notif-text').innerText = student.notification;
@@ -218,21 +362,10 @@
                 })
                 .catch(() => {
                     overlay.style.display = 'none';
-                    alert("Account not found. If you just registered, wait 5 seconds and try logging in.");
+                    alert("Account Error: Check connection or try again in 5 seconds.");
                 });
         });
     </script>
-    <style>
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
 </body>
 
 </html>
