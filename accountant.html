@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Accountant Tool | CCST</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+        .btn-clear { color: white; border: none; font-weight: bold; cursor: pointer; }
+        .on { background: #27ae60; } .off { background: #e74c3c; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Accountant Control</h2>
+    <input id="searchId" placeholder="Enter Student ID">
+    <button onclick="search()" style="background:#004080; color:white;">Search Student</button>
+    
+    <div id="result" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
+        <h3 id="name"></h3>
+        <p id="info"></p>
+        <p>Current Balance: <b id="bal"></b></p>
+        <button id="toggle" class="btn-clear" onclick="toggle()">Toggle Clearance</button>
+    </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzu_CMO2gzqOPQzoWnVWj5dGR2SV88hrZ_a9rhGqGhdNkvbqjsFREkk7Vxh7qBXojf46A/exec";
+let current = null;
+
+async function search() {
+    const res = await fetch(`${SCRIPT_URL}?action=accountant_search&id=${document.getElementById('searchId').value}`);
+    const data = await res.json();
+    if(data.error) return alert(data.error);
+    current = data;
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('name').innerText = data.name;
+    document.getElementById('info').innerText = `${data.program} | Level ${data.level}`;
+    document.getElementById('bal').innerText = `GHC ${data.balance}`;
+    updateBtn(data.isCleared);
+}
+
+function updateBtn(s) {
+    const b = document.getElementById('toggle');
+    b.innerText = s ? "✅ CLEARED" : "❌ NOT CLEARED";
+    b.className = s ? "btn-clear on" : "btn-clear off";
+}
+
+async function toggle() {
+    const newS = !current.isCleared;
+    await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'toggle_clearance', id: current.id, status: newS }) });
+    current.isCleared = newS;
+    updateBtn(newS);
+}
+</script>
+</body>
+</html>

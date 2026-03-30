@@ -1,245 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCST Student Portal</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal | CCST</title>
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --sidebar-width: 260px;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background: #f4f7f9;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* AUTH SECTION */
-        #auth-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            z-index: 2000;
-        }
-
-        .auth-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 380px;
-        }
-
-        /* SIDEBAR LOGIC */
-        #sidebar {
-            width: var(--sidebar-width);
-            background: var(--primary-color);
-            color: white;
-            position: fixed;
-            height: 100vh;
-            left: -260px;
-            transition: 0.3s;
-            z-index: 1000;
-        }
-
-        #sidebar.active {
-            left: 0;
-        }
-
-        .nav-item {
-            padding: 15px 25px;
-            cursor: pointer;
-            border-left: 4px solid transparent;
-            list-style: none;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-item.active {
-            border-left-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* CONTENT LOGIC */
-        #main-content {
-            flex: 1;
-            transition: 0.3s;
-            margin-left: 0;
-            padding-top: 60px;
-        }
-
-        .top-bar {
-            background: white;
-            padding: 0 20px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 999;
-        }
-
-        .page {
-            display: none;
-            padding: 30px;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #eee;
-            margin-bottom: 20px;
-        }
-
-        #sync-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-        }
-
-        .hidden {
-            display: none !important;
-        }
+        :root { --primary: #004080; --bg: #f4f6f9; --text: #2c3e50; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+        .container { padding: 20px; max-width: 800px; margin: auto; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        input, select, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
+        .hidden { display: none; }
+        .welcome-hero { background: linear-gradient(135deg, var(--primary), #0056b3); color: white; padding: 30px; border-radius: 15px; }
     </style>
 </head>
-
 <body>
-
-    <div id="sync-overlay">Loading...</div>
-
-    <div id="auth-container">
-        <div class="auth-card">
-            <h2 id="title" style="text-align:center;">CCST Login</h2>
-            <form id="loginForm">
-                <input type="email" id="email" placeholder="Email" required
-                    style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
-                <input type="password" id="pass" placeholder="Password" required
-                    style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
-                <button type="submit"
-                    style="width:100%; padding:12px; background:var(--accent-color); color:white; border:none; border-radius:8px;">Login</button>
-            </form>
-        </div>
+<div class="container" id="authPage">
+    <div class="card" style="text-align:center;">
+        <h2>CCST Login</h2>
+        <input id="idEl" placeholder="Student ID (e.g. CCST/RN/24/001)">
+        <input id="passEl" type="password" placeholder="Password">
+        <button onclick="login()">LOGIN</button>
+        <button onclick="register()" style="background:#27ae60; margin-top:10px;">REGISTER FIRST TIME</button>
     </div>
+</div>
 
-    <nav id="sidebar">
-        <div style="padding:40px 20px; text-align:center; border-bottom:1px solid #444;">
-            <img id="side-img" src="" style="width:70px; border-radius:50%; background:#eee;">
-            <h4 id="side-name" style="margin:10px 0 0;">Student</h4>
+<div class="container hidden" id="dashboard">
+    <div class="welcome-hero">
+        <h2 id="greet"></h2>
+        <p id="subInfo"></p>
+    </div>
+    <div id="regCard" class="card" style="margin-top:20px;">
+        <h3>Course Registration</h3>
+        <div id="statBox" style="padding:15px; border-radius:10px; text-align:center; font-weight:bold;">Checking Clearance...</div>
+        <div id="regForm" class="hidden">
+            <textarea id="courseInput" placeholder="Enter Course Codes (e.g. NUR101, MAT202)"></textarea>
+            <button onclick="submitCourses()" style="background:#27ae60">Submit Registration</button>
         </div>
-        <ul style="padding:0;">
-            <li class="nav-item active" onclick="showPage('home', this)">🏠 Dashboard</li>
-            <li class="nav-item" onclick="showPage('courses', this)">📚 Courses</li>
-            <li class="nav-item" onclick="showPage('grades', this)">📊 Grades</li>
-            <li class="nav-item" onclick="showPage('fees', this)">💰 Fees</li>
-            <li class="nav-item" style="color:red; margin-top:30px;" onclick="location.reload()">Logout</li>
-        </ul>
-    </nav>
+        <p id="regDone" class="hidden" style="color:#27ae60; font-weight:bold; text-align:center;">✅ You are already registered.</p>
+    </div>
+</div>
 
-    <main id="main-content">
-        <div class="top-bar">
-            <div onclick="toggleMenu()" style="font-size:24px; cursor:pointer; margin-right:20px;">☰</div>
-            <div style="font-weight:bold;">CCST PORTAL</div>
-        </div>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzu_CMO2gzqOPQzoWnVWj5dGR2SV88hrZ_a9rhGqGhdNkvbqjsFREkk7Vxh7qBXojf46A/exec";
+const $ = (id) => document.getElementById(id);
 
-        <div id="home" class="page active">
-            <h2>Welcome Home</h2>
-            <div class="card">GPA: <strong id="u-gpa">0.00</strong></div>
-            <div class="card">Status: <strong id="u-fees">Pending</strong></div>
-        </div>
+async function hash(p) {
+    const buf = new TextEncoder().encode(p);
+    const h = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
-        <div id="courses" class="page">
-            <h2>My Courses</h2>
-            <div id="course-container" class="card"></div>
-        </div>
+async function login() {
+    const hPass = await hash($('passEl').value);
+    const res = await fetch(`${SCRIPT_URL}?id=${$('idEl').value}&password=${hPass}`);
+    const data = await res.json();
+    if(data.error) return alert(data.error);
+    $('authPage').classList.add('hidden'); $('dashboard').classList.remove('hidden');
+    
+    // UI Update
+    const hr = new Date().getHours();
+    const greet = hr < 12 ? "Morning" : hr < 17 ? "Afternoon" : "Evening";
+    $('greet').innerText = `Good ${greet}, ${data.profile.name.split(' ')[0]}!`;
+    $('subInfo').innerText = `${data.profile.program} | Level ${data.profile.level}`;
 
-        <div id="grades" class="page">
-            <h2>Result History</h2>
-            <div id="grade-container" class="card" style="white-space:pre-line;"></div>
-        </div>
+    if(data.profile.isCleared) {
+        $('statBox').innerText = "✅ Cleared for Registration"; $('statBox').style.background = "#e8f5e9";
+        if(data.profile.registeredCourses) $('regDone').classList.remove('hidden'); else $('regForm').classList.remove('hidden');
+    } else {
+        $('statBox').innerText = "❌ Not Cleared. Visit Accountant."; $('statBox').style.background = "#ffebee";
+    }
+}
 
-        <div id="fees" class="page">
-            <h2>Fee Breakdown</h2>
-            <div id="fee-container" class="card" style="white-space:pre-line;"></div>
-        </div>
-    </main>
+async function register() {
+    const hPass = await hash($('passEl').value);
+    await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'register', id: $('idEl').value, password: hPass, role: 'student' }) });
+    alert("Registration successful. Now Login.");
+}
 
-    <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVnQMCjsSBvfZWTqCNXOS3aZABlSZRPmz-VQ3daR3TWy4o2kTzC8571qti_zZbGnb4GQ/exec';
-
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
-        function showPage(id, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-            if (window.innerWidth < 768) toggleMenu();
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const overlay = document.getElementById('sync-overlay');
-            overlay.style.display = 'flex';
-
-            fetch(`${SCRIPT_URL}?email=${email}`)
-                .then(res => res.json())
-                .then(data => {
-                    overlay.style.display = 'none';
-                    if (data.error) {
-                        alert("Error: " + data.error);
-                        return;
-                    }
-
-                    // Successful Login
-                    document.getElementById('auth-container').classList.add('hidden');
-                    document.getElementById('side-name').innerText = data.name;
-                    document.getElementById('u-gpa').innerText = data.gpa;
-                    document.getElementById('u-fees').innerText = data.fees;
-                    document.getElementById('course-container').innerText = data.courses;
-                    document.getElementById('grade-container').innerText = data.history;
-                    document.getElementById('fee-container').innerText = data.feeDetail;
-                    document.getElementById('side-img').src = `https://ui-avatars.com/api/?name=${data.name}`;
-                })
-                .catch(err => {
-                    overlay.style.display = 'none';
-                    alert("Network Error: Could not connect to Google Script. Check your URL.");
-                });
-        });
-    </script>
+async function submitCourses() {
+    await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'register_courses', id: $('idEl').value, courses: $('courseInput').value }) });
+    alert("Registered!"); location.reload();
+}
+</script>
 </body>
-
 </html>
